@@ -30,6 +30,8 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipEntry.DEFLATED
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+import dalvik.system.ZipPathValidator
+
 
 enum class ZipFileOperation { INCLUDE_ITEM, SKIP_ITEM, CANCEL }
 
@@ -46,6 +48,10 @@ class FlutterArchivePlugin : FlutterPlugin, MethodCallHandler {
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         Log.d(LOG_TAG, "onAttachedToEngine - IN")
+
+        if (Build.VERSION.SDK_INT >= 34) {
+            ZipPathValidator.clearCallback()
+        }
 
         if (pluginBinding != null) {
             Log.w(LOG_TAG, "onAttachedToEngine - already attached")
